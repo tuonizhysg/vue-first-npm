@@ -119,7 +119,9 @@ npm publish
 ```bash
 git config user.name "tuonizhysg"
 git config user.email "zhysg1001@163.com"
+git remote rm origin
 git remote add origin git@github.com-tuonizhysg:tuonizhysg/vue-first-npm.git
+git push --set-upstream origin main
 ```
 ## 贡献指南
 
