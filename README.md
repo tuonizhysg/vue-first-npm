@@ -115,6 +115,12 @@ pnpm build
 npm publish
 ```
 
+## 切换github子账号以及远程的仓库分支
+```bash
+git config user.name "tuonizhysg"
+git config user.email "zhysg1001@163.com"
+git remote add origin git@github.com-tuonizhysg:tuonizhysg/vue-first-npm.git
+```
 ## 贡献指南
 
 1. Fork 本仓库
