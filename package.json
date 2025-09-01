@@ -16,7 +16,7 @@
     "./style.css": "./dist/style.css"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5000",
     "build": "vite build",
     "preview": "vite preview",
     "test:unit": "vitest",

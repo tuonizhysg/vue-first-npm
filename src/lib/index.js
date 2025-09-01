@@ -9,3 +9,10 @@ export { default as IconDocumentation } from '../components/icons/IconDocumentat
 export { default as IconEcosystem } from '../components/icons/IconEcosystem.vue'
 export { default as IconSupport } from '../components/icons/IconSupport.vue'
 export { default as IconTooling } from '../components/icons/IconTooling.vue'
+
+
+// 导入所有样式文件
+import '@/assets/base.css'
+import '@/assets/main.css'
+// 如果有 SCSS 文件
+//import '@/assets/scss/main.scss'
