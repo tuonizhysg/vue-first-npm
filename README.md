@@ -14,6 +14,18 @@
 - 自动化的构建和压缩流程
 - ESLint 代码规范检查
 - 完整的开发文档
+- 支持 ES Module 和 UMD 格式
+- 按需引入组件
+
+## 更新日志
+
+### 1.0.2 (2025-09-01)
+
+- 优化包体积，现在只发布编译后的文件
+- 新增 ES Module 和 UMD 格式支持
+- 支持按需引入组件
+- 添加 CSS 样式文件独立引入支持
+- 重构构建配置，优化输出文件结构
 
 ## 安装
 
@@ -26,6 +38,202 @@ pnpm add vue-first-npm
 
 # 使用 yarn
 yarn add vue-first-npm
+```
+
+## 使用方式
+
+### ES Module 方式
+
+```javascript
+// 按需引入组件
+import { HelloWorld, TheWelcome } from 'vue-first-npm'
+// 引入样式
+import 'vue-first-npm/style.css'
+
+export default {
+  components: {
+    HelloWorld,
+    TheWelcome
+  }
+}
+```
+
+### CommonJS 方式
+
+```javascript
+const { HelloWorld } = require('vue-first-npm')
+require('vue-first-npm/style.css')
+```
+
+### 通过 CDN 使用（UMD 格式）
+
+```html
+<!-- 引入 Vue -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/vue-first-npm/dist/vue-first-npm.umd.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/vue-first-npm/dist/style.css">
+
+<script>
+  // 组件可以通过 VueFirstNpm.组件名 访问
+  const { HelloWorld } = VueFirstNpm
+</script>
+```
+
+## 可用组件
+
+目前包含以下组件：
+
+- `HelloWorld`: 欢迎组件
+- `TheWelcome`: 欢迎页面组件
+- `WelcomeItem`: 欢迎页面项目组件
+- `IconCommunity`: 社区图标组件
+- `IconDocumentation`: 文档图标组件
+- `IconEcosystem`: 生态系统图标组件
+- `IconSupport`: 支持图标组件
+- `IconTooling`: 工具图标组件
+
+## 开发指南
+
+### 开发环境设置
+
+```bash
+# 安装依赖
+pnpm install
+
+# 启动开发服务器
+pnpm dev
+
+# 运行单元测试
+pnpm test:unit
+
+# 运行代码检查
+pnpm lint
+```
+
+### 构建发布
+
+```bash
+# 构建库文件
+pnpm build
+
+# 预览构建结果
+pnpm preview
+
+# 发布到 npm
+npm publish
+```
+
+### 项目结构
+
+```
+src/
+  ├── lib/         # 库入口文件
+  ├── components/  # 组件源码
+  ├── assets/      # 静态资源
+  └── ...
+dist/              # 构建输出目录
+  ├── vue-first-npm.es.js   # ES Module 格式
+  ├── vue-first-npm.umd.js  # UMD 格式
+  └── style.css            # 样式文件
+```
+
+### 构建配置说明
+
+#### Vite 配置
+
+`vite.config.js` 中的库构建配置：
+
+```javascript
+export default defineConfig({
+  build: {
+    lib: {
+      // 库模式入口文件
+      entry: fileURLToPath(new URL('./src/lib/index.js', import.meta.url)),
+      // 暴露到全局的变量名
+      name: 'VueFirstNpm',
+      // 输出文件名格式
+      fileName: (format) => `vue-first-npm.${format}.js`
+    },
+    rollupOptions: {
+      // 将 Vue 设置为外部依赖
+      external: ['vue'],
+      output: {
+        // 在 UMD 构建模式下为外部依赖提供一个全局变量
+        globals: {
+          vue: 'Vue'
+        },
+        // 导出模式为命名导出
+        exports: 'named'
+      }
+    }
+  }
+})
+```
+
+配置说明：
+- `build.lib`: 库模式构建配置
+  - `entry`: 指定库的入口文件
+  - `name`: 库暴露的全局变量名（用于 UMD/IIFE 格式）
+  - `fileName`: 输出文件名生成函数，根据不同格式生成对应文件名
+- `rollupOptions`: Rollup 打包配置
+  - `external`: 外部依赖，不会被打包进库文件
+  - `output.globals`: UMD 格式下外部依赖的全局变量名映射
+  - `output.exports`: 使用命名导出模式，支持按需引入
+
+#### Package 配置
+
+`package.json` 中的关键配置：
+
+```json
+{
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-first-npm.umd.js",
+  "module": "./dist/vue-first-npm.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-first-npm.es.js",
+      "require": "./dist/vue-first-npm.umd.js"
+    },
+    "./style.css": "./dist/style.css"
+  }
+}
+```
+
+配置说明：
+- `files`: 指定发布到 npm 时包含的文件，这里只包含 `dist` 目录
+- `main`: 指定 CommonJS/UMD 格式的入口文件
+- `module`: 指定 ES Module 格式的入口文件
+- `exports`: 配置包的导出规则
+  - `"."`: 主入口配置
+    - `import`: ES Module 导入时使用的文件
+    - `require`: CommonJS 导入时使用的文件
+  - `"./style.css"`: 样式文件的子路径导出配置
+
+## 贡献指南
+
+1. Fork 本仓库
+2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的改动 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
+
+## 许可证
+
+[MIT](LICENSE)
+
+## 作者
+
+tuonizhysg
+
+## 致谢
+
+- [Vue.js](https://vuejs.org/)
+- [Vite](https://vitejs.dev/)
+- [所有贡献者](../../contributors)
 ```
 
 ## 使用方法
@@ -115,7 +323,7 @@ pnpm build
 npm publish
 ```
 
-## 切换github子账号以及远程的仓库分支
+## 需要切换github子账号来提交远程的仓库
 ```bash
 git config user.name "tuonizhysg"
 git config user.email "zhysg1001@163.com"

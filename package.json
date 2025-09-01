@@ -3,6 +3,18 @@
   "version": "1.0.1",
   "private": false,
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-first-npm.umd.js",
+  "module": "./dist/vue-first-npm.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-first-npm.es.js",
+      "require": "./dist/vue-first-npm.umd.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
