@@ -312,6 +312,7 @@ npm version 1.2.3
 - 自动修改 package.json 中的版本号
 - 创建一个新的 git commit
 - 创建一个新的 git tag
+- 注意一定要在提交新版本号时，git commit 一下
 
 2. 构建项目：
 ```bash
