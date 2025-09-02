@@ -81,6 +81,12 @@ require('vue-first-npm/style.css')
 </script>
 ```
 
+### uni-app 环境下引用
+
+一个在uni-app 环境下引用 npm发布的包工程示例
+
+[vuefirstnpm-simple](https://github.com/tuonizhysg/vuefirstnpm-simple)
+
 ## 可用组件
 
 目前包含以下组件：
